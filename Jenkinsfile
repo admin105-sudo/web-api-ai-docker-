@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         EC2_IP = "98.84.15.229"
-        SSH_KEY = ""C:\Users\Abi\Downloads\Key (1).pem""
+        SSH_KEY = "C:\Users\Abi\Downloads\Key (1).pem"
         APP_NAME = "webapp"
     }
 
