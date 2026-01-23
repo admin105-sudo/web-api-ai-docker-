@@ -1,29 +1,38 @@
 pipeline {
     agent any
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
 
     environment {
-        EC2_IP = "98.84.15.229"
-        SSH_KEY = "C:\Users\Abi\Downloads\Key (1).pem"
-        APP_NAME = "webapp"
+        EC2_HOST = "98.84.15.229"
     }
 
     stages {
-        stage('Clone Repo') {
+        stage('Checkout') {
             steps {
                 git 'https://github.com/admin105-sudo/web-api-ai-docker-.git'
             }
         }
 
+        stage('Build & Docker Compose') {
+            steps {
+                sh 'docker compose build'
+                sh 'docker compose push'    // optional if using registry
+            }
+        }
+
         stage('Deploy to EC2') {
             steps {
-                sh '''
-                ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@$EC2_IP << EOF
-                  docker stop $APP_NAME || true
-                  docker rm $APP_NAME || true
-                  docker build -t $APP_NAME:latest .
-                  docker run -d -p 80:80 --name $APP_NAME $APP_NAME:latest
-                EOF
-                '''
+                sshagent(['ec2-key']) {
+                    sh '''
+                    ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST "
+                    cd /path/to/app
+                    docker compose pull
+                    docker compose up -d
+                    "
+                    '''
+                }
             }
         }
     }
