@@ -7,6 +7,7 @@ pipeline {
 
     environment {
         EC2_IP = "98.84.15.229"
+        GIT_REPO = "https://github.com/admin105-sudo/web-api-ai-docker-.git"
     }
 
     stages {
