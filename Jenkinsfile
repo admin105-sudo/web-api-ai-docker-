@@ -13,7 +13,7 @@ pipeline {
 
         stage('Clone Repo') {
             steps {
-                git ''
+                git 'https://github.com/admin105-sudo/web-api-ai-docker-.git'
             }
         }
 
