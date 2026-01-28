@@ -1,12 +1,8 @@
 pipeline {
     agent any
 
-    triggers {
-        githubPush()
-    }
-
     environment {
-        EC2_IP = "98.86.171.127"
+        EC2_IP = "13.220.3.85"
     }
 
     stages {
@@ -23,7 +19,7 @@ pipeline {
                     sh """
                     ssh -o StrictHostKeyChecking=no ubuntu@${EC2_IP} '
                     if [ ! -d app ]; then
-                        git clone https://github.com/admin105-sudo/DockerJenkin.git app
+                        git clone https://github.com/admin105-sudo/web-api-ai-docker-.git
                     fi
                     cd app
                     git pull
